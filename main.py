@@ -1,9 +1,16 @@
-from src.prompting import *
+from package.prompting import *
 import joblib
 import pandas as pd
+import os
 
-df = pd.read_csv('data/StudentPerformance.csv')
-model = joblib.load('model/panda.joblib')
+
+print('reading dataset and model...')
+try:
+    df = pd.read_csv('data/StudentPerformance.csv')
+    model = joblib.load('model/panda.joblib')
+    print('dataset and model readed!')
+except Exception as e:
+    print(f"reading fail: {e}")
 
 while True:
     userInput = str(input('You: '))
@@ -12,6 +19,10 @@ while True:
     if userInput == 'quit':
         print('Chat closed!')
         break
+
+    if userInput == 'cls':
+        os.system('cls' if os.name == 'nt' else 'clear')
+        continue
 
     try:
         prompt = prompting(

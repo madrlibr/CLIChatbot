@@ -1,6 +1,5 @@
 import re
 import joblib
-
 class extract:
     def __init__(self, userInput, model):
         self.userInput = userInput

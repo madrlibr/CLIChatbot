@@ -1,18 +1,25 @@
-import io
+import pandas as pd
 
-def info(data):
-    buffer = io.StringIO()
-    data.info(buf=buffer)
-    return buffer.getvalue()
-            
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+
+def showAll(data):
+    return f"Menampilkan semua baris\n{data.to_string()}"
+
 def describe(data):
     data = data.describe()
-    return data
+    return f'Menampilkan deskripsi dataset\n{data}'
         
 def head(data, n):
     data = data.head(n)
-    return data
-        
+    return f'Menampilkan {n} baris awal\n{data}'
+
+def info(data):
+    try:
+        return f"Menampilkan informasi dataset\n{data.info()}"
+    except Exception as e:
+        return f"Terjadi kesalahan: {e}"
 def dropna(data):
     try:
         return data.dropna()
@@ -21,7 +28,7 @@ def dropna(data):
     
 def tail(data, n):
     data = data.tail(n)
-    return data
+    return f'Menampilkan {n} baris akhir\n{data}'
 
 def deleteRow(data, n):#this function is still not working properly
     try:
@@ -31,7 +38,8 @@ def deleteRow(data, n):#this function is still not working properly
     
 def selectColumn(data, n):
     try:
-        return data.iloc[:, n]
+        column_name = data.columns[n]
+        return f'Menampilkan kolom {column_name} dengan index ke-{n}\n{data.iloc[:, n]}'
     except:
         pass
 
@@ -39,7 +47,8 @@ def meanColumn(data, n):
     column = selectColumn(data, n)
     try:
         mean = round((column).mean(), 2)
-        return mean
+        column_name = data.columns[n]
+        return f"mean dari kolom {column_name} adalah {mean}"
     except:
         return "Kesalahan! tidak dapat melakukan operasi, pastikan kolom ada dan tipe data kolom adalah integer atau float"
 
@@ -47,17 +56,17 @@ def medianColumn(data, n):
     column = selectColumn(data, n)
     try:
         median = round((column).median(), 2)
-        return median
+        column_name = data.columns[n]
+        return f"median dari kolom {column_name} adalah {median}"
     except:
         return "Kesalahan! tidak dapat melakukan operasi, pastikan kolom ada dan tipe data kolom adalah integer atau float"
 
 def sumColumn(data, n):
     column = selectColumn(data, n)
     try:
-        
         if column.dtype.kind in 'ifu':
             summ = column.sum()
-            return summ
+            return f"sum dari kolom {data.columns[n]} adalah {summ}"
         else:
             return "Kesalahan! tidak dapat melakukan operasi, pastikan kolom ada dan tipe data kolom adalah integer atau float"
         
@@ -67,18 +76,18 @@ def sumColumn(data, n):
 def modusColumn(data, n):
     try:
         column = selectColumn(data, n)
+        column_name = data.columns[n]
         modus = column.mode()
-        return modus
+        return f"modus dari kolom {column_name} adalah {modus}"
     except:
         return "Kesalahan! tidak dapat melakukan operasi modus!"
     
 def checkDtype(data, n):
     try:
         column_name = data.columns[n]
-        name = column_name
         column = selectColumn(data, n)
         dtype = (column.dtype)
-        return f"Tipe data kolom '{name}' (index {n}) adalah {dtype}"
+        return f"Tipe data kolom '{column_name}' (index-{n}) adalah {dtype}"
     except:
         return f"Kesalahan! tidak ada kolom dengan index ke-{n}"
     
