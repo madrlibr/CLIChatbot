@@ -1,10 +1,16 @@
 from .function import *
 from .extraction import extract
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
+import pyfiglet
 
-def prompting(model, message, data):
-    df = data
+cs = Console()
+
+def prompting(model, message, df, ):
     extraction = extract(userInput=message, model=model)
     predict, number = extraction.process()
+   
 
     functionMap = { 
         1: lambda: showAll(df), 

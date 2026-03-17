@@ -17,7 +17,8 @@ def head(data, n):
 
 def info(data):
     try:
-        return f"Menampilkan informasi dataset\n{data.info()}"
+        info = data.info()
+        return f"Menampilkan informasi dataset\n{info}"
     except Exception as e:
         return f"Terjadi kesalahan: {e}"
 def dropna(data):
